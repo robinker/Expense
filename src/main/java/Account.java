@@ -1,3 +1,6 @@
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+
 import java.util.ArrayList;
 
 public class Account {
@@ -35,7 +38,15 @@ public class Account {
         return expense;
     }
 
+    public ArrayList<Transaction> getTransactions() {
+        return transactions;
+    }
+
     public String getName() {
         return name;
+    }
+
+    public ObservableList<Transaction> getList(){
+        return FXCollections.observableArrayList(transactions);
     }
 }

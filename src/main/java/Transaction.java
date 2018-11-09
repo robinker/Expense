@@ -7,12 +7,10 @@ public class Transaction {
     private String description;
 
     public Transaction(LocalDate date, double amount, String type, String description) {
-        if(amount > 0) {
-            this.date = date;
-            this.amount = amount;
-            this.type = type;
-            this.description = description;
-        }
+        this.date = date;
+        this.amount = amount;
+        this.type = type;
+        this.description = description;
     }
 
     public Transaction(LocalDate date, double amount, String type){
@@ -36,12 +34,7 @@ public class Transaction {
     }
 
     public void setAmount(double amount) {
-        if(amount > 0)
-            this.type = "deposit";
-        else {
-            this.type = "expense";
-            amount = -amount;
-        }
         this.amount = amount;
     }
+
 }
