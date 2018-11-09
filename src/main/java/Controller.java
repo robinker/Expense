@@ -1,4 +1,3 @@
-import com.sun.xml.internal.bind.v2.runtime.property.PropertyFactory;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
