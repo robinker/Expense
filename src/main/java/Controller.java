@@ -2,16 +2,18 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 
+import java.io.File;
+import java.io.FileWriter;
 import java.time.LocalDate;
 
 
 public class Controller {
     @FXML
-    private TableView<Transaction> tableView;
+    protected TableView<Transaction> tableView;
     @FXML
-    private TableColumn dateColumn;
+    protected TableColumn dateColumn;
     @FXML
-    private TableColumn amountColumn;
+    protected TableColumn amountColumn;
     @FXML
     private TableColumn typeColumn;
     @FXML
@@ -20,8 +22,12 @@ public class Controller {
     @FXML
     private Button addButton;
     @FXML
-    private Button cancelButton;
+    private Button showBalanceButton;
+    @FXML
+    protected Button doneButton;
 
+    @FXML
+    private TextField dateTextFiled;
     @FXML
     private TextField amountTextFiled;
     @FXML
@@ -34,6 +40,7 @@ public class Controller {
 
     @FXML
     private Label balanceLabel;
+    private boolean isEdit = false;
 
     private Account account = new Account("Test");
     private Transaction transaction;
@@ -58,6 +65,7 @@ public class Controller {
         depositRB.setSelected(true);
         expenseRB.setToggleGroup(groupType);
         displayTable();
+        doneButton.setDisable(true);
     }
 
     @FXML
@@ -68,12 +76,14 @@ public class Controller {
             String description = descriptionTextArea.getText();
             if(expenseRB.isSelected())
                 type = "expense";
-            amount = Integer.parseInt(amountTextFiled.getText());
+            amount = Double.parseDouble(amountTextFiled.getText());
             transaction = new Transaction(LocalDate.now(), amount, type, description);
             account.addTransaction(transaction);
             displayTable();
             clearText();
         }
+
+
 
     }
 
@@ -83,10 +93,39 @@ public class Controller {
     }
 
     private void clearText(){
-        amountTextFiled.setText("");
-        descriptionTextArea.setText("");
+        dateTextFiled.clear();
+        amountTextFiled.clear();
+        descriptionTextArea.clear();
     }
 
+    @FXML
+    public void editButton(){
+        try {
+            transaction = tableView.getSelectionModel().getSelectedItem();
+            dateTextFiled.setText(""+transaction.getDate());
+            amountTextFiled.setText(""+transaction.getAmount());
+            if(transaction.getType().equalsIgnoreCase("expense"))
+                groupType.selectToggle(expenseRB);
+            else if(transaction.getType().equalsIgnoreCase("deposit"))
+                groupType.selectToggle(depositRB);
+            descriptionTextArea.setText(""+transaction.getDescription());
+            doneButton.setDisable(false);
+        }catch (Exception ignore){}
+    }
+
+    @FXML
+    public void doneButton(){
+        transaction.setAmount(Double.parseDouble(amountTextFiled.getText()));
+        String type = "deposit";
+        if (expenseRB.isSelected())
+            type = "expense";
+        transaction.setType(type);
+        transaction.setDescription(descriptionTextArea.getText());
+        transaction.setDate(LocalDate.parse(dateTextFiled.getText()));
+        clearText();
+        displayTable();
+        doneButton.setDisable(true);
+    }
 
 
 

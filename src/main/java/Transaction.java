@@ -37,4 +37,15 @@ public class Transaction {
         this.amount = amount;
     }
 
+    public void setDate(LocalDate date) {
+        this.date = date;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
 }
